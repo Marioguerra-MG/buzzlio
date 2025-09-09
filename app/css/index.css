@@ -186,9 +186,15 @@ body{
   overflow-y: auto;
 }
 
-.footer{
+.footer {
   text-align: center;
-  margin: 32px 0;
+  margin: 40px 0 20px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
+  line-height: 1.6;
 }
+
+.footer strong {
+  color: var(--accent);
+}
+
