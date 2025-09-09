@@ -1,0 +1,194 @@
+:root{
+  --bg: #f5f7fa;
+  --card: #ffffff;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --muted: #6b7280;
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(0,0,0,0.08);
+  --transition: all 0.3s ease;
+}
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: #111827;
+  -webkit-font-smoothing: antialiased;
+}
+
+.top{
+  text-align: center;
+  padding: 40px 20px;
+}
+.top h1{
+  font-size: 36px;
+  font-weight: 700;
+}
+.top .subtitle{
+  margin-top: 8px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.container{
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.controls{
+  background: var(--card);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+.controls:hover{
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+}
+
+.controls label{
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.controls input, 
+.controls select{
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid #e6e9ef;
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.controls input:focus,
+.controls select:focus{
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+}
+
+.row{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.row select{
+  flex: 1;
+}
+
+.btn{
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.btn:hover{
+  transform: translateY(-2px);
+}
+.btn.primary{
+  background: var(--accent);
+  color: white;
+}
+.btn.primary:hover{
+  background: var(--accent-hover);
+}
+.btn.buy{
+  background: #10b981;
+  color: white;
+  text-decoration: none;
+}
+.btn.small{
+  padding: 6px 10px;
+  font-size: 13px;
+  background: #f3f4f6;
+  color: #374151;
+}
+.btn.small:hover{
+  background: #e5e7eb;
+}
+
+.info{
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.resultados{
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.card{
+  background: var(--card);
+  padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+
+.card .tipo{
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.card p{
+  margin-top: 6px;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.card .card-actions{
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.acoes{
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.historico{
+  margin-top: 32px;
+  background: var(--card);
+  padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+#histList{
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.footer{
+  text-align: center;
+  margin: 32px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
