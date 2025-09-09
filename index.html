@@ -2,11 +2,10 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUZZLIO</title>
+    <title>BUZZLIO - Gerador de Micro-Conteúdos</title>
     <link rel="stylesheet" href="/app/css/index.css">
-    <!-- jsPDF CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="/app/js/index.js" defer></script>
 </head>
@@ -14,34 +13,55 @@
 <body>
     <header class="top">
         <h1>Gerador de Micro-Conteúdos</h1>
-        <p class="subtitle">Posts, Tweets, Threads e Roteiros para Reels — em segundos.</p>
-        <a href="/app/html/success.html">sucesso</a>
+        <p class="subtitle">Post Curto (Instagram) — em segundos.</p>
     </header>
 
     <main class="container">
         <section class="controls">
             <label for="tema">Tema / Palavra-chave</label>
             <input id="tema" type="text" placeholder="Ex: hamburguer artesanal, maquiagem, treino">
+
             <div class="row">
-                <label for="tipo">Tipo</label>
-                <select id="tipo">
-                    <option value="post">Post Curto (Instagram)</option>
-                    <option value="tweet">Tweet</option>
-                    <option value="thread">Thread (3 tweets)</option>
-                    <option value="reel">Roteiro Reel</option>
+                <label for="categoria">Categoria</label>
+                <select id="categoria">
+                    <option value="culinaria">Culinária</option>
+                    <option value="marketingDigital">Marketing Digital</option>
+                    <option value="fitness">Fitness</option>
+                    <option value="beleza">Beleza</option>
+                    <option value="moda">Moda</option>
+                    <option value="tecnologia">Tecnologia</option>
+                    <option value="financas">Finanças</option>
+                    <option value="empreendedorismo">Empreendedorismo</option>
+                    <option value="educacao">Educação</option>
+                    <option value="viagem">Viagem</option>
+                    <option value="saude">Saúde</option>
+                    <option value="entretenimento">Entretenimento</option>
+                    <option value="pets">Pets</option>
+                    <option value="gaming">Games</option>
+                    <option value="fotografia">Fotografia</option>
+                    <option value="arte">Arte</option>
+                    <option value="desenvolvimentoPessoal">Desenvolvimento Pessoal</option>
                 </select>
-                <button id="gerar" class="btn primary">Gerar ideias</button>
+
+
+                <label for="tipo" style="display: none;">Tipo</label>
+                <select id="tipo" style="display: none;">
+                    <option value="post">Post Curto (Instagram)</option>
+                </select>
             </div>
+
+            <div class="acoes">
+                <button id="gerar" class="btn primary">Gerar ideias</button>
+                <button id="copiarTudo" class="btn">Copiar tudo</button>
+                <button id="exportarPDF" class="btn">Exportar PDF (Premium)</button>
+                <a id="comprarLink" href="https://pay.kiwify.com.br/dCD91dT" target="_blank" class="btn buy">Comprar
+                    Premium</a>
+            </div>
+
             <p class="info" id="limiteInfo"></p>
         </section>
 
         <section id="resultados" class="resultados"></section>
-
-        <section class="acoes">
-            <button id="copiarTudo" class="btn">Copiar tudo</button>
-            <button id="exportarPDF" class="btn">Exportar PDF (Premium)</button>
-            <a id="comprarLink" href="https://pay.kiwify.com.br/dCD91dT" target="_blank" class="btn buy">Comprar Premium</a>
-        </section>
 
         <section class="historico">
             <h3>Histórico (local)</h3>
