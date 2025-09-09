@@ -85,11 +85,9 @@ const TEMPLATES = {
       "Rotina fitness: [tema] é essencial para resultados.",
       "Como [tema] melhora força e resistência.",
       "Treinos curtos e eficientes com [tema].",
-      //
     ]
   }
 };
-
 
 const LIMITE_DIARIO = 3;
 const STORAGE_PREFIX = 'gmc_';
@@ -105,6 +103,24 @@ const exportarPDFBtn = document.getElementById('exportarPDF');
 const limiteInfo = document.getElementById('limiteInfo');
 const histList = document.getElementById('histList');
 const limparHistBtn = document.getElementById('limparHist');
+
+// ---------- TOAST ----------
+function showToast(msg, type = 'info') {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+
+  if (type === 'success') toast.style.backgroundColor = '#4CAF50';
+  if (type === 'error') toast.style.backgroundColor = '#f44336';
+  if (type === 'warning') toast.style.backgroundColor = '#ff9800';
+
+  container.appendChild(toast);
+
+  setTimeout(() => { container.removeChild(toast); }, 4000);
+}
 
 // ---------- FUNÇÕES ----------
 
@@ -153,11 +169,11 @@ function renderResults(list) {
     const copiar = document.createElement('button');
     copiar.className = 'btn';
     copiar.textContent = 'Copiar';
-    copiar.onclick = () => { navigator.clipboard.writeText(item.text); alert('Copiado!'); };
+    copiar.onclick = () => { navigator.clipboard.writeText(item.text); showToast('Copiado!', 'success'); };
     const salvar = document.createElement('button');
     salvar.className = 'btn';
     salvar.textContent = 'Salvar';
-    salvar.onclick = () => { saveToHistory(item); alert('Salvo no histórico.'); renderHistory(); };
+    salvar.onclick = () => { saveToHistory(item); showToast('Salvo no histórico.', 'success'); renderHistory(); };
     actions.appendChild(copiar);
     actions.appendChild(salvar);
     card.appendChild(tipo);
@@ -194,12 +210,12 @@ function gerar() {
   const tema = temaInput.value.trim();
   const tipo = tipoSelect.value;
   const categoria = categoriaSelect.value;
-  if (!tema) { alert('Digite um tema!'); return; }
-  if (!TEMPLATES[categoria] || !TEMPLATES[categoria][tipo]) { alert('Não há templates para essa categoria/tipo'); return; }
+  if (!tema) { showToast('Digite um tema!', 'warning'); return; }
+  if (!TEMPLATES[categoria] || !TEMPLATES[categoria][tipo]) { showToast('Não há templates para essa categoria/tipo', 'error'); return; }
 
   if (!isPremium()) {
     const d = getDaily();
-    if (d.count >= LIMITE_DIARIO) { alert('Limite diário atingido! Torne-se Premium.'); return; }
+    if (d.count >= LIMITE_DIARIO) { showToast('Limite diário atingido! Torne-se Premium.', 'error'); return; }
     d.count++; saveDaily(d);
   }
 
@@ -215,30 +231,58 @@ function gerar() {
 // Copiar tudo
 function copiarTudo() {
   const texts = Array.from(document.querySelectorAll('#resultados .card p')).map(p => p.textContent).join('\n\n');
-  if (!texts) return alert('Nada para copiar!');
-  navigator.clipboard.writeText(texts); alert('Todas as ideias copiadas!');
+  if (!texts) return showToast('Nada para copiar!', 'warning');
+  navigator.clipboard.writeText(texts); showToast('Todas as ideias copiadas!', 'success');
 }
 
 // Exportar PDF
 function exportarPDF() {
-  if (!isPremium()) { alert('Recurso premium. Compre para desbloquear.'); return; }
+  if (!isPremium()) { showToast('Recurso premium. Compre para desbloquear.', 'warning'); return; }
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'pt', format: 'a4' });
   const cards = Array.from(document.querySelectorAll('#resultados .card p')).map(p => p.textContent);
-  if (cards.length === 0) return alert('Gere ideias antes!');
+  if (cards.length === 0) return showToast('Gere ideias antes!', 'warning');
   let y = 40; doc.setFontSize(14); doc.text('Micro-conteúdos gerados', 40, 30); doc.setFontSize(11);
   cards.forEach((c, idx) => {
     const lines = doc.splitTextToSize((idx + 1) + '. ' + c, 500);
     doc.text(lines, 40, y); y += (lines.length * 14) + 10; if (y > 740) { doc.addPage(); y = 40; }
   });
   doc.save('micro_conteudos.pdf');
+  showToast('PDF gerado com sucesso!', 'success');
 }
 
-// Limpar histórico
+// Limpar histórico com toast centralizado
 function limparHistorico() {
-  if (!confirm('Limpar histórico local?')) return;
-  localStorage.removeItem(STORAGE_PREFIX + 'history'); renderHistory();
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  // Evita múltiplas confirmações
+  if (container.querySelector('.toast-confirm')) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'toast-confirm';
+  toast.innerHTML = `
+    <div>Tem certeza que deseja limpar o histórico?</div>
+    <div style="margin-top:10px;">
+      <button id="confirmYes">Sim</button>
+      <button id="confirmNo">Não</button>
+    </div>
+  `;
+  container.appendChild(toast);
+
+  document.getElementById('confirmYes').onclick = () => {
+    localStorage.removeItem(STORAGE_PREFIX + 'history');
+    renderHistory();
+    showToast('Histórico limpo!', 'success');
+    container.removeChild(toast);
+  };
+
+  document.getElementById('confirmNo').onclick = () => {
+    container.removeChild(toast);
+  };
 }
+
+
 
 // Init
 window.addEventListener('load', () => {

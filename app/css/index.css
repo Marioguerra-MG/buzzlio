@@ -210,3 +210,65 @@ body {
 .footer strong {
   color: var(--accent);
 }
+
+/* Toast container */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toast normal */
+.toast {
+  background-color: #333;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Toast de confirmação */
+.toast-confirm {
+  background-color: #444;
+  color: #fff;
+  padding: 16px 24px;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: slideInConfirm 0.3s forwards;
+}
+
+.toast-confirm button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.toast-confirm #confirmYes { background-color: #4CAF50; color: #fff; margin-right: 8px; }
+.toast-confirm #confirmNo { background-color: #f44336; color: #fff; }
+
+/* Animações */
+@keyframes slideIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeOut {
+  to { opacity: 0; transform: translateY(-20px); }
+}
+@keyframes slideInConfirm {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
