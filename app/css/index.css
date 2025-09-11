@@ -192,10 +192,12 @@ body {
   padding: 18px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  height: 500px;
+  border: 1px solid black;
 }
 
 #histList {
-  max-height: 220px;
+  max-height: 450px;
   overflow-y: auto;
 }
 
@@ -229,7 +231,7 @@ body {
   color: #fff;
   padding: 12px 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   opacity: 0;
   transform: translateY(-20px);
   animation: slideIn 0.5s forwards, fadeOut 0.5s 3.5s forwards;
@@ -242,7 +244,7 @@ body {
   color: #fff;
   padding: 16px 24px;
   border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -257,18 +259,102 @@ body {
   font-weight: 500;
 }
 
-.toast-confirm #confirmYes { background-color: #4CAF50; color: #fff; margin-right: 8px; }
-.toast-confirm #confirmNo { background-color: #f44336; color: #fff; }
+.toast-confirm #confirmYes {
+  background-color: #4CAF50;
+  color: #fff;
+  margin-right: 8px;
+}
+
+.toast-confirm #confirmNo {
+  background-color: #f44336;
+  color: #fff;
+}
 
 /* Animações */
 @keyframes slideIn {
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeOut {
-  to { opacity: 0; transform: translateY(-20px); }
-}
-@keyframes slideInConfirm {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes slideInConfirm {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===================== */
+/* RESPONSIVIDADE */
+/* ===================== */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .top h1 {
+    font-size: 28px;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  .controls {
+    padding: 18px;
+  }
+
+  .toast-container {
+    width: 95%;
+  }
+
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .top {
+    padding: 24px 12px;
+  }
+
+  .top h1 {
+    font-size: 24px;
+  }
+
+  .top .subtitle {
+    font-size: 14px;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .acoes {
+    flex-direction: column;
+  }
+
+  .resultados {
+    grid-template-columns: 1fr;
+    /* uma coluna no mobile */
+  }
+
+  .historico {
+    height: auto;
+    /* libera altura no mobile */
+  }
+
+  #histList {
+    max-height: 300px;
+  }
+}

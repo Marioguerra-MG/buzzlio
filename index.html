@@ -2,121 +2,125 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUZZLIO - Gerador de Micro-Conteúdos</title>
-    <link rel="stylesheet" href="/app/css/index.css">
-    <link rel="stylesheet" href="/app/css/modalPlanos.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script type="module" src="/app/js/index.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUZZLIO - Gerador de Micro-Conteúdos</title>
+  <link rel="stylesheet" href="/app/css/index.css">
+  <link rel="stylesheet" href="/app/css/modalPlanos.css">
+
+  <!-- Biblioteca para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Script principal (ESM) -->
+  <script type="module" src="/app/js/index.js" defer></script>
 </head>
 
 <body>
-    <header class="top">
-        <h1>Gerador de Micro-Conteúdos</h1>
-        <p class="subtitle">Post Curto (Instagram) — em segundos.</p>
-    </header>
-    <main class="container">
-        <section class="controls">
-            <label for="tema">Tema / Palavra-chave</label>
-            <input id="tema" type="text" placeholder="Ex: hamburguer artesanal, maquiagem, treino">
+  <header class="top">
+    <h1>Gerador de Micro-Conteúdos</h1>
+    <p class="subtitle">Post Curto (Instagram) — em segundos.</p>
+  </header>
 
-            <div class="row">
-                <label for="categoria">Categoria</label>
-                <select id="categoria">
-                    <option value="culinaria">Culinária</option>
-                    <option value="marketingDigital">Marketing Digital</option>
-                    <option value="fitness">Fitness</option>
-                    <option value="beleza">Beleza</option>
-                    <option value="moda">Moda</option>
-                    <option value="tecnologia">Tecnologia</option>
-                    <option value="financas">Finanças</option>
-                    <option value="empreendedorismo">Empreendedorismo</option>
-                    <option value="educacao">Educação</option>
-                    <option value="viagem">Viagem</option>
-                    <option value="saude">Saúde</option>
-                    <option value="entretenimento">Entretenimento</option>
-                    <option value="pets">Pets</option>
-                    <option value="gaming">Games</option>
-                    <option value="fotografia">Fotografia</option>
-                    <option value="arte">Arte</option>
-                    <option value="desenvolvimentoPessoal">Desenvolvimento Pessoal</option>
-                </select>
+  <main class="container">
+    <section class="controls">
+      <label for="tema">Tema / Palavra-chave</label>
+      <input id="tema" type="text" placeholder="Ex: hamburguer artesanal, maquiagem, treino">
+
+      <div class="row">
+        <label for="categoria">Categoria</label>
+        <select id="categoria">
+          <option value="culinaria">Culinária</option>
+          <option value="marketingDigital">Marketing Digital</option>
+          <option value="fitness">Fitness</option>
+          <option value="beleza">Beleza</option>
+          <option value="moda">Moda</option>
+          <option value="tecnologia">Tecnologia</option>
+          <option value="financas">Finanças</option>
+          <option value="empreendedorismo">Empreendedorismo</option>
+          <option value="educacao">Educação</option>
+          <option value="viagem">Viagem</option>
+          <option value="saude">Saúde</option>
+          <option value="entretenimento">Entretenimento</option>
+          <option value="pets">Pets</option>
+          <option value="gaming">Games</option>
+          <option value="fotografia">Fotografia</option>
+          <option value="arte">Arte</option>
+          <option value="desenvolvimentoPessoal">Desenvolvimento Pessoal</option>
+        </select>
+
+        <label for="tipo" style="display: none;">Tipo</label>
+        <select id="tipo" style="display: none;">
+          <option value="post">Post Curto (Instagram)</option>
+        </select>
+      </div>
+      <div class="acoes">
+        <button id="gerar" class="btn primary">Gerar ideias</button>
+        <button id="copiarTudo" class="btn">Copiar tudo</button>
+        <button id="exportarPDF" class="btn">Exportar PDF (Premium)</button>
+        <a id="comprarLink" class="btn buy">Comprar Premium</a>
+      </div>
+
+      <p class="info" id="limiteInfo"></p>
+    </section>
+
+    <section id="resultados" class="resultados"></section>
+
+    <section class="historico">
+      <h3>Histórico (local)</h3>
+      <div id="histList"></div>
+      <button id="limparHist" class="btn small">Limpar histórico</button>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>✨ Feito por <strong>BUZZLIO</strong> — Inspirando ideias, gerando conexões.</p>
+    <p>&copy; 2025 BUZZLIO. Todos os direitos reservados.</p>
+  </footer>
+
+  <div id="toast-container" class="toast-container"></div>
+  
 
 
-                <label for="tipo" style="display: none;">Tipo</label>
-                <select id="tipo" style="display: none;">
-                    <option value="post">Post Curto (Instagram)</option>
-                </select>
-            </div>
+  <!-- Modal de Planos -->
+  <div id="modalPlanos" class="modal-planos" style="display: none">
+    <div class="modalPlanos-content">
+      <span class="modalPlanos-close" id="closeModalPlanos">&times;</span>
+      <h2 class="modal-title">Descubra o Premium</h2>
+      <p class="modal-subtitle">Mais recursos, mais ideias, mais liberdade!</p>
 
-            <div class="acoes">
-                <button id="gerar" class="btn primary">Gerar ideias</button>
-                <button id="copiarTudo" class="btn">Copiar tudo</button>
-                <button id="exportarPDF" class="btn">Exportar PDF (Premium)</button>
-                <a id="comprarLink" class="btn buy">Comprar Premium</a>
-            </div>
-
-            <p class="info" id="limiteInfo"></p>
-        </section>
-
-        <section id="resultados" class="resultados"></section>
-
-        <section class="historico">
-            <h3>Histórico (local)</h3>
-            <div id="histList"></div>
-            <button id="limparHist" class="btn small">Limpar histórico</button>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>✨ Feito por <strong>BUZZLIO</strong> — Inspirando ideias, gerando conexões.</p>
-        <p>&copy; 2025 BUZZLIO. Todos os direitos reservados.</p>
-    </footer>
-
-    <div id="toast-container" class="toast-container"></div>
-
-
-    <!-- Modal de Planos -->
-    <div id="modalPlanos" class="modal-planos" style="display: none">
-        <div class="modalPlanos-content">
-            <span class="modalPlanos-close" id="closeModalPlanos">&times;</span>
-            <h2 class="modal-title">Descubra o Premium</h2>
-            <p class="modal-subtitle">Mais recursos, mais ideias, mais liberdade!</p>
-
-            <div class="modal-comparison">
-                <!-- Free Plan -->
-                <div class="plan-card free">
-                    <h3>Grátis</h3>
-                    <ul>
-                        <li>1 geração por categoria/dia</li>
-                        <li>Acesso básico aos templates</li>
-                        <li>Salvar ideias no histórico</li>
-                        <li>Copiar ideias individualmente</li>
-                    </ul>
-                </div>
-
-                <!-- Premium Plan -->
-                <div class="plan-card premium">
-                    <h3>Premium</h3>
-                    <ul>
-                        <li>Gera ilimitado por categoria</li>
-                        <li>Todos os templates desbloqueados</li>
-                        <li>Exportar ideias em PDF</li>
-                        <li>Copiar todas as ideias de uma vez</li>
-                        <li>Histórico completo de até 200 ideias</li>
-                        <li>Suporte prioritário</li>
-                    </ul>
-                </div>
-            </div>
-
-            <a id="irPagamento" href="https://pay.kiwify.com.br/dCD91dT" target="_blank"
-                class="btn btn-primary modal-btn">Assinar Premium</a>
+      <div class="modal-comparison">
+        <!-- Free Plan -->
+        <div class="plan-card free">
+          <h3>Grátis</h3>
+          <ul>
+            <li>1 geração por categoria/dia</li>
+            <li>Acesso básico aos templates</li>
+            <li>Salvar ideias no histórico limitado</li>
+            <li>Copiar ideias limitado</li>
+          </ul>
         </div>
+
+        <!-- Premium Plan -->
+        <div class="plan-card premium">
+          <h3>Premium</h3>
+          <ul>
+            <li>Gera ilimitado por categoria</li>
+            <li>Todos os templates desbloqueados</li>
+            <li>Exportar ideias em PDF</li>
+            <li>Copiar todas as ideias de uma vez</li>
+            <li>Histórico completo de até 200 ideias</li>
+            <li>Suporte prioritário</li>
+          </ul>
+        </div>
+      </div>
+
+      <a id="irPagamento" href="https://pay.kiwify.com.br/dCD91dT" target="_blank"
+        class="btn btn-primary modal-btn">Assinar Premium</a>
     </div>
+  </div>
 
-
-    <script src="/app/js/modalPlanos.js"></script>
+  <!-- Scripts extras -->
+  <script src="/app/js/modalPlanos.js"></script>
 </body>
 
 </html>

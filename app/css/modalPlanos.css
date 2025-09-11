@@ -2,8 +2,8 @@
 .modal-planos {
     display: none;
     position: fixed;
-    z-index: 9999;
     inset: 0;
+    z-index: 9999;
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(6px);
     font-family: 'Inter', 'Poppins', sans-serif;
@@ -11,6 +11,7 @@
     justify-content: center;
     align-items: center;
     padding: 20px;
+    overflow-y: auto; /* permite rolagem em telas pequenas */
 }
 
 .modalPlanos-content {
@@ -24,6 +25,8 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
     animation: modalFadeIn 0.5s ease-out;
     color: #222;
+    max-height: 90vh; /* limita altura para caber na tela */
+    overflow-y: auto; /* ativa rolagem interna se passar do limite */
 }
 
 @keyframes modalFadeIn {
@@ -37,7 +40,7 @@
     right: 20px;
     font-size: 28px;
     font-weight: 700;
-    color: #666;
+    color: red;
     cursor: pointer;
     transition: color 0.3s;
 }
@@ -150,10 +153,35 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.12);
 }
 
-/* Responsivo */
+/* Responsivo até 720px */
+@media (max-width: 720px) {
+    .modalPlanos-content {
+        width: 95%;
+        padding: 25px 20px;
+        max-height: 95vh;
+    }
+
+    .modal-title{
+        margin-top: 20px;
+    }
+}
+
+/* Responsivo até 500px */
 @media (max-width: 500px) {
+    .modalPlanos-content {
+        width: 100%;
+        height: auto;
+        max-height: 100vh; /* ocupa altura quase total da tela */
+        border-radius: 0;  /* sem borda arredondada para encaixar melhor */
+        padding: 20px 15px;
+    }
+
     .modal-comparison {
         flex-direction: column;
         gap: 15px;
+    }
+
+    .plan-card {
+        min-width: 100%;
     }
 }
