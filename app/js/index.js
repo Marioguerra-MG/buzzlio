@@ -1,95 +1,5 @@
-// ---------- CONFIG ----------
-const TEMPLATES = {
-  culinaria: {
-    post: [
-      "3 motivos para amar [tema] na cozinha 🍳 Receita rápida e sabor irresistível!",
-      "Você já experimentou [tema]? 😋 Comente sua receita favorita!",
-      "Dica rápida: [tema] deixa qualquer refeição mais especial. #culinaria",
-      "Antes e depois: veja como [tema] transforma sua cozinha!",
-      "Receita express: aprenda [tema] em menos de 15 minutos!",
-      "Transforme seu jantar com [tema] hoje mesmo.",
-      "Segredo da cozinha: [tema] é o toque final perfeito.",
-      "Refeição completa: como [tema] faz toda diferença.",
-      "Aproveite [tema] para criar pratos incríveis.",
-      "Aprenda [tema] e impressione sua família!",
-      "Experimente [tema] para um sabor único e delicioso.",
-      "Dica de chef: como [tema] pode elevar suas receitas.",
-      "Receita rápida de [tema] que todos vão adorar.",
-      "Inove na cozinha usando [tema] de forma criativa.",
-      "Cozinhar com [tema] nunca foi tão fácil!",
-      "Receitas simples e deliciosas com [tema].",
-      "Aprenda truques de cozinha usando [tema].",
-      "Como [tema] transforma pratos comuns em especiais.",
-      "Delícias em minutos: receitas com [tema].",
-      "O segredo do sabor: [tema] na sua mesa.",
-      "Prato perfeito: inclua [tema] na sua receita hoje.",
-      "Receitas irresistíveis com [tema] para qualquer ocasião.",
-      "Dicas rápidas para usar [tema] sem complicações.",
-      "A magia do [tema] na cozinha: fácil e saborosa.",
-      "Receitas de família com [tema]: tradição e sabor.",
-      "Transforme qualquer refeição com [tema] agora.",
-      "Inspiração do dia: crie algo novo com [tema].",
-      "Como impressionar usando apenas [tema] na receita.",
-      "Sugestões deliciosas com [tema] para o jantar.",
-      "Receita prática de [tema] que todos vão adorar.",
-      "Receitas gourmet fáceis com [tema].",
-      "Aposte em [tema] e surpreenda sua família.",
-      "Receitas rápidas e saborosas com [tema].",
-      "Dicas de chef: receitas incríveis com [tema].",
-      "Como [tema] pode salvar o seu jantar em minutos.",
-      "Receitas saudáveis com [tema] para o dia a dia.",
-      "O poder do [tema] em pratos simples e deliciosos.",
-      "Receitas criativas com [tema] para impressionar amigos.",
-      "Como preparar [tema] de forma fácil e rápida.",
-      "Sugestão do dia: prato incrível com [tema].",
-      "Aprenda a usar [tema] como um verdadeiro chef.",
-      "Dicas de preparo: [tema] para receitas perfeitas.",
-      "Receita express com [tema]: sabor em minutos.",
-      "Como [tema] transforma o café da manhã em especial.",
-      "Receita simples de [tema] que todos vão adorar.",
-      "Experimente [tema] e surpreenda no almoço.",
-      "Receitas incríveis com [tema] para qualquer ocasião.",
-      "O segredo de uma refeição deliciosa: [tema].",
-      "Aprenda receitas rápidas usando [tema] hoje mesmo.",
-      "Receitas irresistíveis com [tema] que você precisa testar.",
-      "Dicas de cozinha: como [tema] muda tudo.",
-      "Receita prática e saborosa com [tema] em menos de 20 minutos."
-    ],
-  },
+import { TEMPLATES } from '/app/js/templetes/start.js';
 
-  marketingDigital: {
-    post: [
-      "Como [tema] pode aumentar suas vendas online 💻 3 passos rápidos para aplicar hoje!",
-      "Estratégia de marketing: use [tema] para engajar seu público.",
-      "Dica rápida: [tema] é essencial para crescer online.",
-      "Antes e depois: veja os resultados de aplicar [tema] em sua campanha!",
-      "Marketing digital eficiente: descubra como [tema] muda tudo.",
-      "Aumente o alcance usando [tema]. #MarketingDigital",
-      "Segredo de engajamento: [tema] aplicado corretamente.",
-      "Transforme sua estratégia com [tema].",
-      "Use [tema] para gerar leads e vendas rapidamente.",
-      "Descubra o poder do [tema] no marketing online.",
-      // ...continue até 50
-    ],
-  },
-
-  fitness: {
-    post: [
-      "Treino rápido de [tema] para resultados visíveis 💪 Inclua na sua rotina diária!",
-      "Dica fitness: como [tema] ajuda a manter a forma.",
-      "Treine com [tema] e veja resultados impressionantes.",
-      "Antes e depois: [tema] que faz diferença na performance.",
-      "Exercício rápido de [tema] para iniciantes.",
-      "Potencialize seu treino usando [tema].",
-      "Descubra os benefícios do [tema] diariamente.",
-      "Rotina fitness: [tema] é essencial para resultados.",
-      "Como [tema] melhora força e resistência.",
-      "Treinos curtos e eficientes com [tema].",
-    ]
-  }
-};
-
-const LIMITE_DIARIO = 3;
 const STORAGE_PREFIX = 'gmc_';
 
 // DOM
@@ -124,20 +34,55 @@ function showToast(msg, type = 'info') {
 
 // ---------- FUNÇÕES ----------
 
-// Premium
-function isPremium() { return localStorage.getItem(STORAGE_PREFIX + 'premium') === 'true'; }
+// Premium com expiração (30 dias)
+function isPremium() {
+  const raw = localStorage.getItem(STORAGE_PREFIX + 'premiumData');
+  if (!raw) return false;
 
-// Contador diário
-function getDaily() {
   try {
-    const raw = localStorage.getItem(STORAGE_PREFIX + 'daily');
-    if (!raw) return { date: todayStr(), count: 0 };
     const obj = JSON.parse(raw);
-    if (obj.date !== todayStr()) return { date: todayStr(), count: 0 };
-    return obj;
-  } catch (e) { return { date: todayStr(), count: 0 }; }
+    if (Date.now() > obj.expires) {
+      localStorage.removeItem(STORAGE_PREFIX + 'premiumData');
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
 }
-function saveDaily(obj) { localStorage.setItem(STORAGE_PREFIX + 'daily', JSON.stringify(obj)); }
+
+function ativarPremium() {
+  const expires = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 dias
+  localStorage.setItem(STORAGE_PREFIX + 'premiumData', JSON.stringify({ expires }));
+  updateLimitInfo();
+}
+
+// Retorna quanto tempo falta do Premium
+function getPremiumRemaining() {
+  const raw = localStorage.getItem(STORAGE_PREFIX + 'premiumData');
+  if (!raw) return null;
+  const obj = JSON.parse(raw);
+  const diff = obj.expires - Date.now();
+  if (diff <= 0) return null;
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  return { dias, horas };
+}
+
+// Limite diário por categoria
+function getDailyByCategory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_PREFIX + 'dailyByCat');
+    const data = raw ? JSON.parse(raw) : {};
+    if (data.date !== todayStr()) return { date: todayStr(), categories: {} };
+    return data;
+  } catch (e) { return { date: todayStr(), categories: {} }; }
+}
+
+function saveDailyByCategory(obj) {
+  localStorage.setItem(STORAGE_PREFIX + 'dailyByCat', JSON.stringify(obj));
+}
+
 function todayStr() { return new Date().toISOString().slice(0, 10); }
 
 // Histórico
@@ -146,8 +91,19 @@ function saveHistory(h) { localStorage.setItem(STORAGE_PREFIX + 'history', JSON.
 
 // Atualiza limite
 function updateLimitInfo() {
-  if (isPremium()) { limiteInfo.textContent = "✅ Premium: geração ilimitada."; }
-  else { const d = getDaily(); limiteInfo.textContent = `Grátis: ${d.count}/${LIMITE_DIARIO} gerações hoje.`; }
+  if (isPremium()) {
+    const rest = getPremiumRemaining();
+    if (rest) {
+      limiteInfo.textContent = `✅ Premium ativo • expira em ${rest.dias}d ${rest.horas}h`;
+    } else {
+      limiteInfo.textContent = "⏳ Premium expirado";
+    }
+  } else {
+    const daily = getDailyByCategory();
+    const cat = categoriaSelect.value;
+    const count = daily.categories[cat] || 0;
+    limiteInfo.textContent = `Grátis: ${count}/1 geração hoje para ${cat}`;
+  }
 }
 
 // Aleatório
@@ -214,9 +170,12 @@ function gerar() {
   if (!TEMPLATES[categoria] || !TEMPLATES[categoria][tipo]) { showToast('Não há templates para essa categoria/tipo', 'error'); return; }
 
   if (!isPremium()) {
-    const d = getDaily();
-    if (d.count >= LIMITE_DIARIO) { showToast('Limite diário atingido! Torne-se Premium.', 'error'); return; }
-    d.count++; saveDaily(d);
+    const daily = getDailyByCategory();
+    const catCount = daily.categories[categoria] || 0;
+    if (catCount >= 1) { showToast('Limite diário para esta categoria atingido! Torne-se Premium.', 'error'); return; }
+    daily.categories[categoria] = catCount + 1;
+    daily.date = todayStr();
+    saveDailyByCategory(daily);
   }
 
   const arr = TEMPLATES[categoria][tipo];
@@ -256,7 +215,6 @@ function limparHistorico() {
   const container = document.getElementById('toast-container');
   if (!container) return;
 
-  // Evita múltiplas confirmações
   if (container.querySelector('.toast-confirm')) return;
 
   const toast = document.createElement('div');
@@ -282,15 +240,38 @@ function limparHistorico() {
   };
 }
 
-
+// ---------- Auto ativar Premium na página de Obrigado ----------
+function autoPremium() {
+  // Exemplo: checa se URL tem "obrigado" para ativar premium
+  if (window.location.href.includes('obrigado')) {
+    if (!isPremium()) {
+      ativarPremium();
+      showToast('Premium ativado automaticamente por 30 dias!', 'success');
+    }
+  }
+}
 
 // Init
 window.addEventListener('load', () => {
+  autoPremium(); // ativa premium se estiver na página de obrigado
   updateLimitInfo();
   renderHistory();
   gerarBtn.addEventListener('click', gerar);
   copiarTudoBtn.addEventListener('click', copiarTudo);
   exportarPDFBtn.addEventListener('click', exportarPDF);
   limparHistBtn.addEventListener('click', limparHistorico);
-  if (isPremium()) { const buy = document.getElementById('comprarLink'); if (buy) buy.style.display = 'none'; }
+
+  if (isPremium()) { 
+    const buy = document.getElementById('comprarLink'); 
+    if (buy) buy.style.display = 'none'; 
+  }
+
+  const ativarPremiumBtn = document.getElementById('ativarPremium');
+  if (ativarPremiumBtn) {
+    ativarPremiumBtn.addEventListener('click', () => {
+      ativarPremium();
+      showToast('Premium ativado por 30 dias!', 'success');
+      if (document.getElementById('comprarLink')) document.getElementById('comprarLink').style.display = 'none';
+    });
+  }
 });

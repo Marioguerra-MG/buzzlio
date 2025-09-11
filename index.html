@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BUZZLIO - Gerador de Micro-Conteúdos</title>
     <link rel="stylesheet" href="/app/css/index.css">
+    <link rel="stylesheet" href="/app/css/modalPlanos.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="/app/js/index.js" defer></script>
+    <script type="module" src="/app/js/index.js" defer></script>
 </head>
 
 <body>
@@ -15,7 +16,6 @@
         <h1>Gerador de Micro-Conteúdos</h1>
         <p class="subtitle">Post Curto (Instagram) — em segundos.</p>
     </header>
-
     <main class="container">
         <section class="controls">
             <label for="tema">Tema / Palavra-chave</label>
@@ -54,8 +54,7 @@
                 <button id="gerar" class="btn primary">Gerar ideias</button>
                 <button id="copiarTudo" class="btn">Copiar tudo</button>
                 <button id="exportarPDF" class="btn">Exportar PDF (Premium)</button>
-                <a id="comprarLink" href="https://pay.kiwify.com.br/dCD91dT" target="_blank" class="btn buy">Comprar
-                    Premium</a>
+                <a id="comprarLink" class="btn buy">Comprar Premium</a>
             </div>
 
             <p class="info" id="limiteInfo"></p>
@@ -77,6 +76,47 @@
 
     <div id="toast-container" class="toast-container"></div>
 
+
+    <!-- Modal de Planos -->
+    <div id="modalPlanos" class="modal-planos" style="display: none">
+        <div class="modalPlanos-content">
+            <span class="modalPlanos-close" id="closeModalPlanos">&times;</span>
+            <h2 class="modal-title">Descubra o Premium</h2>
+            <p class="modal-subtitle">Mais recursos, mais ideias, mais liberdade!</p>
+
+            <div class="modal-comparison">
+                <!-- Free Plan -->
+                <div class="plan-card free">
+                    <h3>Grátis</h3>
+                    <ul>
+                        <li>1 geração por categoria/dia</li>
+                        <li>Acesso básico aos templates</li>
+                        <li>Salvar ideias no histórico</li>
+                        <li>Copiar ideias individualmente</li>
+                    </ul>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="plan-card premium">
+                    <h3>Premium</h3>
+                    <ul>
+                        <li>Gera ilimitado por categoria</li>
+                        <li>Todos os templates desbloqueados</li>
+                        <li>Exportar ideias em PDF</li>
+                        <li>Copiar todas as ideias de uma vez</li>
+                        <li>Histórico completo de até 200 ideias</li>
+                        <li>Suporte prioritário</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a id="irPagamento" href="https://pay.kiwify.com.br/dCD91dT" target="_blank"
+                class="btn btn-primary modal-btn">Assinar Premium</a>
+        </div>
+    </div>
+
+
+    <script src="/app/js/modalPlanos.js"></script>
 </body>
 
 </html>
